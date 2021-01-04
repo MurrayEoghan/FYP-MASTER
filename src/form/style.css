@@ -1,0 +1,35 @@
+.generic-input-style{
+    width: 300px;
+}
+
+#container{
+    width: 30vw;
+    margin-top: 100px;
+}
+
+#login-grid{
+
+    padding: 18px;
+    position: absolute;
+    background: #7D0541;
+
+}
+
+.grid-row{
+    padding-bottom: 25px;
+    width: 25vw;
+}
+
+.generic-form-header-icon{
+    color: white;
+}
+
+#submit-button{
+    background: #7F4E52;
+    color: white;
+}
+
+#submit-button:hover{
+    background-color: #fff;
+    color: #7F4E52;
+}
