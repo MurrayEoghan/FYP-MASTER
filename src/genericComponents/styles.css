@@ -1,0 +1,20 @@
+#image-controls {
+  position: relative;
+  top: 20px;
+  overflow: hidden;
+}
+
+#upload-p {
+  display: flex;
+  justify-content: center;
+}
+
+#progress-bar {
+  width: 80%;
+  margin-top: 30px;
+  margin-left: 10%;
+}
+
+.disabled-tab-pane {
+  border: 1px solid rgb(158, 154, 154);
+}

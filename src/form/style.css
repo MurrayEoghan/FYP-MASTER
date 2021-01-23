@@ -1,35 +1,124 @@
-.generic-input-style{
-    width: 300px;
+@import url("https://fonts.googleapis.com/css2?family=Potta+One&display=swap");
+
+.generic-input-style {
+  width: 300px;
 }
 
-#container{
-    width: 30vw;
-    margin-top: 100px;
+#container {
+  text-align: center;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
 }
 
-#login-grid{
+#login-grid {
+  padding: 18px;
+  margin-top: 150px;
 
-    padding: 18px;
-    position: absolute;
-    background: #7D0541;
-
+  position: absolute;
+  background: #7d0541;
 }
 
-.grid-row{
-    padding-bottom: 25px;
-    width: 25vw;
+.grid-row {
+  padding-bottom: 15px;
+  width: 25vw;
 }
 
-.generic-form-header-icon{
-    color: white;
+.form-row {
+  padding-bottom: 10px;
+  width: 25vw;
 }
 
-#submit-button{
-    background: #7F4E52;
-    color: white;
+.generic-form-header-icon {
+  color: white;
 }
 
-#submit-button:hover{
-    background-color: #fff;
-    color: #7F4E52;
+#submit-button {
+  background: #7f4e52;
+  color: white;
+}
+
+#submit-button:hover {
+  background-color: #fff;
+  color: #7f4e52;
+}
+
+.form-label {
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Profile page styles */
+
+#tab-pane-container {
+  display: flex;
+  position: relative;
+  left: 40px;
+  /* justify-content: center; */
+  height: 95vh;
+  width: 90vw;
+}
+
+#tab-pane {
+  margin-top: 130px;
+  width: 90vw;
+  text-align: center;
+}
+
+#form-container {
+  height: 100%;
+  padding-top: 70px;
+  width: 90%;
+}
+
+.tab-headers {
+  font-size: 3em;
+  position: relative;
+  top: 30px;
+  font-family: "Potta One", cursive;
+
+  color: #7d0541;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+#tab-body {
+  padding: 20px;
+  border: none;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+#edit-profile-save-button {
+  margin: 20px;
+}
+
+div.ui.secondary.menu .active.item {
+  background-color: #7d0541;
+  color: white;
+  box-shadow: 3px 6px 18px #888888;
+}
+
+#image-controls {
+  position: relative;
+  top: 20px;
+  overflow: hidden;
+}
+
+#profile-pic-container {
+  position: relative;
+  top: 40px;
+}
+
+.address-text {
+  float: right;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.profile-rows {
+  position: relative;
+  top: 30px;
 }
