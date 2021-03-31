@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Form, Button, Container, Image, Grid } from "semantic-ui-react";
+import React, { useState, useEffect } from "react";
+import { Form, Button, Container, Grid } from "semantic-ui-react";
 import { connect } from "react-redux";
 import "../style.css";
 import axios from "axios";
@@ -44,12 +44,21 @@ function EditUserProfile(props) {
     setAdd3(userAddr3);
     setCounty(userCounty);
     setCountry(userCountry);
-  }, [props]);
+  }, [
+    firstname,
+    lastname,
+    userAddr1,
+    userAddr2,
+    userAddr3,
+    userAge,
+    userCountry,
+    userCounty,
+  ]);
 
   const headers = {
     "Content-Type": "application/json",
   };
-  console.log(gender.value);
+
   const data = {
     id: parseInt(profileId),
     fname: fname,
@@ -90,7 +99,7 @@ function EditUserProfile(props) {
       <Grid>
         <Grid.Row>
           <Grid.Column width={16}>
-            <span className="tab-headers">Edit Profile</span>
+            <span className="tab-headers-text-edit">Edit Profile</span>
 
             <Container id="form-container">
               <Form widths="equal">
@@ -164,7 +173,6 @@ function EditUserProfile(props) {
                     <label>County</label>
                     <Form.Input
                       placeholder="County"
-                      value={""}
                       fluid
                       value={county}
                       onChange={(e) => setCounty(e.target.value)}
@@ -174,7 +182,6 @@ function EditUserProfile(props) {
                     <label>Country</label>
                     <Form.Input
                       placeholder="Country"
-                      value={""}
                       fluid
                       value={country}
                       onChange={(e) => setCountry(e.target.value)}
@@ -185,7 +192,6 @@ function EditUserProfile(props) {
                   <Button.Group>
                     <Button
                       primary
-                      icon="save"
                       disabled={
                         fname !== "" && lname !== ""
                           ? age > 0
@@ -206,9 +212,7 @@ function EditUserProfile(props) {
                       onClick={submitForm}
                     />
                     <Button.Or />
-                    <Button onClick={disableEditing} icon="close">
-                      Cancel
-                    </Button>
+                    <Button onClick={disableEditing}>Cancel</Button>
                   </Button.Group>
                 </Form.Field>
               </Form>

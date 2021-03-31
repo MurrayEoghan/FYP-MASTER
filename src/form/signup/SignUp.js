@@ -11,7 +11,6 @@ import {
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { connect, useDispatch } from "react-redux";
-import _ from "lodash";
 
 function SignUp() {
   const headers = {
@@ -74,7 +73,7 @@ function SignUp() {
     } else {
       setPasswordError(true);
     }
-  }, [password]);
+  }, [password, confirmPassword]);
 
   useEffect(() => {
     if (email.match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g)) {
@@ -109,105 +108,99 @@ function SignUp() {
   }
 
   return (
-    <Container centered id="container">
-      <Grid id="login-grid">
-        <Grid.Column>
-          <Form>
-            <Form.Field className="grid-row">
-              <Icon
-                name="users"
-                size="massive"
-                className="generic-form-header-icon"
-              />
-            </Form.Field>
-            <Form.Field className="form-row" required>
-              <label>
-                <span className="form-label">Username</span>
-              </label>
-              <Form.Input
-                fluid
-                placeholder="Username - Min 6 letters"
-                value={username}
-                error={
-                  usernameError
-                    ? { content: "No Special Characters. Min 7 Characters" }
-                    : false
-                }
-                onChange={handleUsername}
-              />
-            </Form.Field>
-            <Form.Field className="form-row" required>
-              <label>
-                <span className="form-label">Password</span>
-              </label>
-              <Input
-                placeholder="Password - Min 8 characters"
-                value={password}
-                type="password"
-                onChange={(e) => handlePassword(e, false)}
-              />
-            </Form.Field>
-            <Form.Field className="form-row" required>
-              <label>
-                <span className="form-label">Confirm Password</span>
-              </label>
-              <Form.Input
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                error={
-                  confirmPassword === password
-                    ? false
-                    : { content: "Passwords Do Not Match" }
-                }
-                type="password"
-                onChange={(e) => handlePassword(e, true)}
-              />
-            </Form.Field>
-            <Form.Field className="form-row" required>
-              <label>
-                <span className="form-label">Email Address</span>
-              </label>
-              <Form.Input
-                placeholder="Email"
-                value={email}
-                error={
-                  emailError ? { content: "Incorrect Email Format" } : false
-                }
-                onChange={(e) => handleEmail(e, false)}
-              />
-            </Form.Field>
-            <Form.Field className="form-row" required>
-              <label>
-                <span className="form-label">Confirm Email Address</span>
-              </label>
-              <Form.Input
-                placeholder="Confirm Email"
-                value={confirmEmail}
-                error={confirmEmail === email ? false : true}
-                onChange={(e) => handleEmail(e, true)}
-              />
-            </Form.Field>
-            <Form.Field className="form-row" required>
-              <Button
-                id="submit-button"
-                content="Register"
-                fluid
-                disabled={
-                  usernameError === false &&
-                  passwordError === false &&
-                  emailError === false &&
-                  email === confirmEmail
-                    ? false
-                    : true
-                }
-                onClick={register}
-              />
-            </Form.Field>
-          </Form>
-          {userExists ? <Message error header="User Already Exists" /> : null}
-        </Grid.Column>
-      </Grid>
-    </Container>
+    <>
+      <Form id="login-grid">
+        <Form.Field className="grid-row">
+          <Icon
+            name="users"
+            size="massive"
+            className="generic-form-header-icon"
+          />
+        </Form.Field>
+        <Form.Field className="form-row" required>
+          <label>
+            <span className="form-label">Username</span>
+          </label>
+          <Form.Input
+            fluid
+            placeholder="Username - Min 6 letters"
+            value={username}
+            error={
+              usernameError
+                ? { content: "No Special Characters. Min 7 Characters" }
+                : false
+            }
+            onChange={handleUsername}
+          />
+        </Form.Field>
+        <Form.Field className="form-row" required>
+          <label>
+            <span className="form-label">Password</span>
+          </label>
+          <Input
+            placeholder="Password - Min 8 characters"
+            value={password}
+            type="password"
+            onChange={(e) => handlePassword(e, false)}
+          />
+        </Form.Field>
+        <Form.Field className="form-row" required>
+          <label>
+            <span className="form-label">Confirm Password</span>
+          </label>
+          <Form.Input
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            error={
+              confirmPassword === password
+                ? false
+                : { content: "Passwords Do Not Match" }
+            }
+            type="password"
+            onChange={(e) => handlePassword(e, true)}
+          />
+        </Form.Field>
+        <Form.Field className="form-row" required>
+          <label>
+            <span className="form-label">Email Address</span>
+          </label>
+          <Form.Input
+            placeholder="Email"
+            value={email}
+            error={emailError ? { content: "Incorrect Email Format" } : false}
+            onChange={(e) => handleEmail(e, false)}
+          />
+        </Form.Field>
+        <Form.Field className="form-row" required>
+          <label>
+            <span className="form-label">Confirm Email Address</span>
+          </label>
+          <Form.Input
+            placeholder="Confirm Email"
+            value={confirmEmail}
+            error={confirmEmail === email ? false : true}
+            onChange={(e) => handleEmail(e, true)}
+          />
+        </Form.Field>
+        <Form.Field className="form-row" required>
+          <Button
+            id="submit-button"
+            content="Register"
+            fluid
+            disabled={
+              usernameError === false &&
+              passwordError === false &&
+              emailError === false &&
+              email === confirmEmail
+                ? false
+                : true
+            }
+            onClick={register}
+          />
+        </Form.Field>
+      </Form>
+      {userExists ? <Message error header="User Already Exists" /> : null}
+    </>
   );
 }
 

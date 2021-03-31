@@ -3,21 +3,26 @@
 .generic-input-style {
   width: 300px;
 }
-
+.ui.secondary.pointing.menu .item {
+  color: #fff;
+}
+.ui.secondary.pointing.menu .active.item {
+  color: #fff !important;
+  border-color: #fff !important;
+}
 #container {
   text-align: center;
   height: 100vh;
   width: 100vw;
   display: flex;
   justify-content: center;
+  background: #7d0541;
+  overflow-y: hidden;
 }
 
 #login-grid {
-  padding: 18px;
-  margin-top: 150px;
-
-  position: absolute;
   background: #7d0541;
+  padding: 30px;
 }
 
 .grid-row {
@@ -55,7 +60,6 @@
   display: flex;
   position: relative;
   left: 40px;
-  /* justify-content: center; */
   height: 95vh;
   width: 90vw;
 }
@@ -73,15 +77,25 @@
 }
 
 .tab-headers {
+  position: relative;
+
+  top: 30px;
+}
+
+.tab-headers-text {
+  font-family: "Potta One", cursive;
   font-size: 3em;
+  text-align: center;
+  color: #7d0541;
+}
+
+.tab-headers-text-edit {
+  font-family: "Potta One", cursive;
+  font-size: 3em;
+  text-align: center;
+  color: #7d0541;
   position: relative;
   top: 30px;
-  font-family: "Potta One", cursive;
-
-  color: #7d0541;
-  display: flex;
-  justify-content: center;
-  text-align: center;
 }
 
 #tab-body {
@@ -114,6 +128,7 @@ div.ui.secondary.menu .active.item {
 
 .address-text {
   float: right;
+  margin-right: 20px;
   font-size: 1.5em;
   font-weight: bold;
 }
@@ -121,4 +136,122 @@ div.ui.secondary.menu .active.item {
 .profile-rows {
   position: relative;
   top: 30px;
+}
+
+div.ui.mini.statistic {
+  margin-top: 0 !important;
+  padding-top: 20px;
+}
+#recent-table {
+  background-color: white;
+  border: none;
+  box-shadow: #7c0842 0px 6px 12px -2px, #7c0842 0px 3px 7px -3px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 85%;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+#table-body {
+  display: block;
+  height: 20vh;
+  overflow: auto;
+}
+
+thead,
+tbody tr {
+  width: 100%;
+  table-layout: fixed;
+}
+
+#follower-table-body {
+  max-height: 30vh !important;
+  overflow-y: auto;
+}
+
+#follow-button {
+  background: #7d0541;
+  color: white;
+  margin-right: 40px;
+  position: relative;
+  bottom: 10px;
+}
+
+#follow-button-container {
+  position: relative;
+  bottom: 8px;
+}
+
+#unfollow-button {
+  background-color: #fff;
+  color: #7f4e52;
+  border: 1px solid #7d0541;
+  margin-right: 40px;
+  position: relative;
+  bottom: 10px;
+}
+#follow-button:hover {
+  background-color: #b40b5f;
+  color: #fff;
+}
+
+#dashboard-table {
+  box-shadow: #7c0842 0px 6px 12px -2px, #7c0842 0px 3px 7px -3px;
+  width: 30vw;
+  display: inline-block;
+  margin-left: 40px;
+  height: 30vw;
+  overflow-x: hidden;
+}
+#user-recent-table {
+  width: 50vw;
+
+  box-shadow: #7c0842 0px 6px 12px -2px, #7c0842 0px 3px 7px -3px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#recent-table {
+  width: 50vw;
+  left: 6vw;
+  box-shadow: #7c0842 0px 6px 12px -2px, #7c0842 0px 3px 7px -3px;
+  position: absolute;
+}
+
+#recent-follower-table {
+  width: 50vw;
+  box-shadow: #7c0842 0px 6px 12px -2px, #7c0842 0px 3px 7px -3px;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  top: 35vh;
+  left: 6vw;
+}
+
+#home-logo {
+  height: 104px;
+  width: 342px;
+  position: absolute;
+  top: 40vh;
+  left: 14vw;
+}
+.ui.divider.inverted,
+.ui.divider.inverted:after,
+.ui.divider.inverted:before {
+  border-left-color: #fff !important;
+  border-top-color: #fff !important;
+  border-right-color: #fff !important;
+  border-bottom-color: #fff !important;
+  color: #fff;
+  background-color: #fff;
+}
+
+.ui.vertical.divider:after {
+  top: -100px !important;
+  bottom: 100px !important;
+}
+
+.ui.vertical.divider:before {
+  top: -80% !important;
 }

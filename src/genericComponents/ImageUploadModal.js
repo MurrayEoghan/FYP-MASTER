@@ -1,8 +1,7 @@
-import React, { Profiler, useState } from "react";
+import React, { useState } from "react";
 import { Modal, Button, Icon, Input, Progress } from "semantic-ui-react";
 import "./styles.css";
 import { storage } from "../firebase/FirebaseConfig";
-import null_profile_pic from "../images/null_profile_pic.png";
 
 function ImageUploadModal(props) {
   let { header, userId, triggerObj, imageReload } = props;
