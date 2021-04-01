@@ -11,7 +11,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { connect } from "react-redux";
 import axios from "axios";
-import UserProfessionTag from "../../genericComponents/UserProfessionTag";
 import "../style.css";
 
 function EditProfile(props) {
@@ -60,7 +59,7 @@ function EditProfile(props) {
       menuItem: (
         <>
           {parsedUrlId === loggedInUserId ? (
-            <Menu.Item disabled style={{ paddingBottom: "30px" }}>
+            <Menu.Item disabled style={{ paddingBottom: "30px" }} key={1}>
               <ImageUploadModal
                 header={"Profile Picture Upload"}
                 userId={loggedInUserId}
@@ -75,7 +74,7 @@ function EditProfile(props) {
               />
             </Menu.Item>
           ) : (
-            <Menu.Item disabled style={{ paddingBottom: "30px" }}>
+            <Menu.Item disabled style={{ paddingBottom: "30px" }} key={2}>
               <Image
                 src={image ? image : null_profile_pic}
                 fluid

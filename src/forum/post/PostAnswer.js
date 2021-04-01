@@ -15,11 +15,13 @@ function PostAnswer(props) {
     answerAuthorId,
     answerAuthorProfession,
     answerId,
-    headers,
+
     loggedInUserId,
     reload,
   } = props;
-
+  const headers = {
+    "Content-Type": "application/json",
+  };
   let [image, setImage] = useState(null);
   let [textAreaContent, setTextAreaContent] = useState("");
   let [editAnswer, setEditAnswer] = useState(false);

@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Table, Popup, Header, Message } from "semantic-ui-react";
-import axios from "axios";
-import _ from "lodash";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
 import "../style.css";
@@ -34,9 +32,9 @@ function RecentPosts(props) {
           </Table.Header>
 
           <Table.Body id="table-body" style={style}>
-            {data.map((post) => {
+            {data.map((post, i) => {
               return (
-                <Table.Row key={post.id}>
+                <Table.Row key={i}>
                   <Table.Cell width={2}>
                     <Header as="h2" textAlign="center">
                       <span className="post-header">{post.votes}</span>

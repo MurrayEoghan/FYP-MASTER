@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Grid,
-  Form,
-  Input,
-  Icon,
-  Button,
-  Message,
-} from "semantic-ui-react";
+import { Form, Input, Icon, Button, Message } from "semantic-ui-react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { connect, useDispatch } from "react-redux";
 
-function SignUp() {
+function SignUp(props) {
+  let { triggerReload } = props;
   const headers = {
     "Content-Type": "application/json",
   };
@@ -99,6 +92,7 @@ function SignUp() {
             sessionStorage.setItem("user", JSON.stringify({ user: username }));
             sessionStorage.setItem("id", res.data.id);
             history.push("/forum");
+            triggerReload();
           }
         });
     } catch (err) {

@@ -22,15 +22,15 @@ function DisplayUserProfile(props) {
     loggedInId,
     professionId,
   } = props;
-  const headers = {
-    "Content-Type": "application/json",
-  };
 
   let [userFollowers, setUserFollowers] = useState([]);
   let [userFollowing, setUserFollowing] = useState([]);
   let [following, setFollowing] = useState(false);
   let [posts, setPosts] = useState([]);
-  async function getPosts() {
+  const getPosts = useCallback(async () => {
+    const headers = {
+      "Content-Type": "application/json",
+    };
     let data = {
       author_id: urlId,
     };
@@ -41,10 +41,10 @@ function DisplayUserProfile(props) {
     } catch (err) {
       console.log(err);
     }
-  }
+  }, [urlId]);
   useEffect(() => {
     getPosts();
-  }, [urlId]);
+  }, [urlId, getPosts]);
 
   useEffect(() => {
     let found = _.filter(userFollowers, _.matches({ id: loggedInId }));
@@ -53,7 +53,7 @@ function DisplayUserProfile(props) {
     } else {
       setFollowing(false);
     }
-  }, [urlId, userFollowers]);
+  }, [urlId, userFollowers, loggedInId]);
 
   let mapsAdd = `http://www.google.com/maps/embed/v1/place?key=AIzaSyBMpl7kzfpil4n_iGXvQdGgu_QaPvoDvjc&q=${userAddr1},${userAddr2},${userAddr3},${userCounty},${userCountry}`;
 
@@ -61,6 +61,9 @@ function DisplayUserProfile(props) {
     let data = {
       parent_id: loggedInId,
       sub_id: urlId,
+    };
+    const headers = {
+      "Content-Type": "application/json",
     };
     try {
       await axios
@@ -86,6 +89,9 @@ function DisplayUserProfile(props) {
       parent_id: loggedInId,
       sub_id: urlId,
     };
+    const headers = {
+      "Content-Type": "application/json",
+    };
     try {
       await axios
         .post(`http://localhost:8080/api/v1/user/unfollow`, data, {
@@ -105,7 +111,10 @@ function DisplayUserProfile(props) {
     unfollow();
   };
 
-  async function getFollowers() {
+  const getFollowers = useCallback(async () => {
+    const headers = {
+      "Content-Type": "application/json",
+    };
     try {
       await axios
         .get(`http://localhost:8080/api/v1/user/${urlId}/followers`, {
@@ -117,8 +126,11 @@ function DisplayUserProfile(props) {
     } catch (error) {
       setUserFollowers([]);
     }
-  }
-  async function getFollowing() {
+  }, [urlId]);
+  const getFollowing = useCallback(async () => {
+    const headers = {
+      "Content-Type": "application/json",
+    };
     try {
       await axios
         .get(`http://localhost:8080/api/v1/user/${urlId}/following`, {
@@ -130,17 +142,17 @@ function DisplayUserProfile(props) {
     } catch (error) {
       setUserFollowing([]);
     }
-  }
+  }, [urlId]);
 
-  const triggerReload = () => {
+  const triggerReload = useCallback(() => {
     getFollowers();
     getFollowing();
     getPosts();
-  };
+  }, [getFollowers, getFollowing, getPosts]);
 
   useEffect(() => {
     triggerReload();
-  }, [urlId]);
+  }, [urlId, triggerReload]);
 
   return (
     <>
@@ -194,10 +206,10 @@ function DisplayUserProfile(props) {
                 content={
                   <Table>
                     <Table.Body id="follower-table-body">
-                      {userFollowers.map((item) => {
+                      {userFollowers.map((item, i) => {
                         return (
                           <>
-                            <FollowerDisplay follower={item} />
+                            <FollowerDisplay follower={item} key={i} />
                           </>
                         );
                       })}
@@ -226,10 +238,10 @@ function DisplayUserProfile(props) {
               content={
                 <Table>
                   <Table.Body id="follower-table-body">
-                    {userFollowing.map((item) => {
+                    {userFollowing.map((item, i) => {
                       return (
                         <>
-                          <FollowerDisplay follower={item} />
+                          <FollowerDisplay follower={item} key={i} />
                         </>
                       );
                     })}
@@ -272,6 +284,7 @@ function DisplayUserProfile(props) {
             width="70%"
             height="300px"
             frameBorder="0"
+            title="practice location"
             scrolling="no"
             marginHeight="0"
             marginWidth="0"

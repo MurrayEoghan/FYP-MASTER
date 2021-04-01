@@ -20,6 +20,8 @@ function UserProfessionTag(props) {
     "brown",
     "grey",
     "black",
+    "red",
+    "red",
   ];
 
   useEffect(() => {
@@ -62,6 +64,9 @@ function UserProfessionTag(props) {
         break;
       case 13:
         setProfessionValue("Optician");
+        break;
+      case 14:
+        setProfessionValue("C.E.O & Founder");
         break;
       default:
         break;

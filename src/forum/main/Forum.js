@@ -70,7 +70,6 @@ function Forum() {
   ];
   const handleSearch = (e) => {
     let val = e.target.value;
-
     setFilteredData(
       data.filter((item) => {
         if (val == null) return data;
@@ -85,22 +84,22 @@ function Forum() {
     if (filteredData.length === 0) {
       switch (sortedOrder) {
         case false:
-          return setData(_.orderBy(data, ["votes"], ["desc"]));
+          return setData((d) => _.orderBy(d, ["votes"], ["desc"]));
         case true:
-          return setData(_.orderBy(data, ["votes"], ["asc"]));
+          return setData((d) => _.orderBy(d, ["votes"], ["asc"]));
         default:
           return null;
       }
     }
     switch (sortedOrder) {
       case false:
-        return setFilteredData(_.orderBy(filteredData, ["votes"], ["desc"]));
+        return setFilteredData((f) => _.orderBy(f, ["votes"], ["desc"]));
       case true:
-        return setFilteredData(_.orderBy(filteredData, ["votes"], ["asc"]));
+        return setFilteredData((f) => _.orderBy(f, ["votes"], ["asc"]));
       default:
         return null;
     }
-  }, [sortedOrder]);
+  }, [sortedOrder, filteredData.length]);
   const handleParentTopicDropdown = (e, { value }) => {
     setParentTopic(value);
   };

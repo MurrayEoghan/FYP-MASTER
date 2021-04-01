@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Icon, Table } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 function Notification(props) {
   let { inboundNotification } = props;
@@ -56,7 +55,7 @@ function Notification(props) {
         setIcon("");
         break;
     }
-  }, [inboundNotification]);
+  }, [inboundNotification, notificationType]);
 
   return (
     <Table.Row style={{ borderBottom: "1px solid #7d0541" }}>

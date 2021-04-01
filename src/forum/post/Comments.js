@@ -10,12 +10,14 @@ import "./comment-styles.css";
 import axios from "axios";
 
 function Comments(props) {
-  let { incomingComment, loggedInUserId, headers, reload } = props;
+  let { incomingComment, loggedInUserId, reload } = props;
   let [image, setImage] = useState(null);
   let [editComment, setEditComment] = useState(false);
   let [deleteComment, setDeleteComment] = useState(false);
   let [textAreaContent, setTextAreaContent] = useState("");
-
+  const headers = {
+    "Content-Type": "application/json",
+  };
   useEffect(() => {
     async function getImages(comment) {
       await storage

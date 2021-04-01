@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { connect } from "react-redux";
 import {
   Grid,
@@ -44,12 +44,6 @@ function PostDisplay(props) {
   let [createAnswer, setCreateAnswer] = useState(false);
   let [createAnswerText, setCreateAnswerText] = useState("");
 
-  const headers = {
-    "Content-Type": "application/json",
-  };
-  let data = {
-    post_id: parseInt(urlPostId),
-  };
   async function getImage(id) {
     setImageLoading(true);
     try {
@@ -64,7 +58,13 @@ function PostDisplay(props) {
       console.log(err);
     }
   }
-  async function getPost() {
+  const getPost = useCallback(async () => {
+    let data = {
+      post_id: parseInt(urlPostId),
+    };
+    const headers = {
+      "Content-Type": "application/json",
+    };
     try {
       await axios
         .post("http://localhost:8080/api/v1/post", data, { headers })
@@ -76,16 +76,20 @@ function PostDisplay(props) {
     } catch (err) {
       console.log(err);
     }
-  }
+  }, [urlPostId]);
+
   useEffect(() => {
     getPost();
-  }, [updateComments, reloadPost]);
+  }, [updateComments, reloadPost, getPost]);
 
   async function updatePost() {
     let data = {
       post_id: post.post_id,
       author_id: loggedInUserId,
       content: editPostContent,
+    };
+    const headers = {
+      "Content-Type": "application/json",
     };
     try {
       await axios
@@ -105,6 +109,9 @@ function PostDisplay(props) {
     setReloadPost(!reloadPost);
   }
   async function deletePost() {
+    const headers = {
+      "Content-Type": "application/json",
+    };
     try {
       await axios
         .delete(`http://localhost:8080/api/v1/delete/post/${post.post_id}`, {
@@ -120,6 +127,9 @@ function PostDisplay(props) {
   }
 
   async function createComment() {
+    const headers = {
+      "Content-Type": "application/json",
+    };
     let data = {
       comment: textAreaValue,
       parent_post_id: post.post_id,
@@ -174,6 +184,9 @@ function PostDisplay(props) {
       author_id: loggedInUserId,
       author: loggedInUser.user,
       author_profession: loggedInProfessionId,
+    };
+    const headers = {
+      "Content-Type": "application/json",
     };
     try {
       await axios
@@ -422,7 +435,6 @@ function PostDisplay(props) {
                 answerAuthorId={post.answer_author_id}
                 answerId={post.answer_id}
                 parentPostId={post.post_id}
-                headers={headers}
                 loggedInUserId={loggedInUserId}
                 reload={() => setReloadPost(!reloadPost)}
               />
@@ -444,7 +456,6 @@ function PostDisplay(props) {
                         <Comments
                           incomingComment={comment}
                           loggedInUserId={loggedInUserId}
-                          headers={headers}
                           professionId={post.profession_id}
                           commentId={comment.comment_id}
                           reload={() => setReloadPost(!reloadPost)}

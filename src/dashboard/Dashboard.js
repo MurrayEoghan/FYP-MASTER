@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Grid,
   Container,
@@ -9,7 +9,7 @@ import {
   Message,
 } from "semantic-ui-react";
 import "../dashboard/style.css";
-import { connect, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import UserProfessionTag from "../genericComponents/UserProfessionTag";
 import FollowerDisplay from "../form/profile/FollowerDisplay";
 import axios from "axios";
@@ -31,7 +31,10 @@ function Dashboard() {
     "Content-Type": "application/json",
   };
 
-  async function getNotifications() {
+  const getNotifications = useCallback(async () => {
+    const headers = {
+      "Content-Type": "application/json",
+    };
     try {
       await axios
         .get(
@@ -46,8 +49,11 @@ function Dashboard() {
     } catch (err) {
       setNotifications([]);
     }
-  }
-  async function getFollowing() {
+  }, [loggedInUserId]);
+  const getFollowing = useCallback(async () => {
+    const headers = {
+      "Content-Type": "application/json",
+    };
     try {
       await axios
         .get(`http://localhost:8080/api/v1/user/${loggedInUserId}/following`, {
@@ -59,8 +65,11 @@ function Dashboard() {
     } catch (error) {
       setUserFollowing([]);
     }
-  }
-  async function getFollowers() {
+  }, [loggedInUserId]);
+  const getFollowers = useCallback(async () => {
+    const headers = {
+      "Content-Type": "application/json",
+    };
     try {
       await axios
         .get(`http://localhost:8080/api/v1/user/${loggedInUserId}/followers`, {
@@ -72,11 +81,14 @@ function Dashboard() {
     } catch (error) {
       setUserFollowers([]);
     }
-  }
+  }, [loggedInUserId]);
 
-  async function getPosts() {
+  const getPosts = useCallback(async () => {
     let data = {
       author_id: loggedInUserId,
+    };
+    const headers = {
+      "Content-Type": "application/json",
     };
     try {
       await axios
@@ -87,9 +99,12 @@ function Dashboard() {
     } catch (err) {
       console.log(err);
     }
-  }
+  }, [loggedInUserId]);
 
-  async function getFollowingPosts() {
+  const getFollowingPosts = useCallback(async () => {
+    const headers = {
+      "Content-Type": "application/json",
+    };
     try {
       await axios
         .get(
@@ -102,7 +117,7 @@ function Dashboard() {
     } catch (err) {
       setRecentFollowerPosts([]);
     }
-  }
+  }, [loggedInUserId]);
 
   async function clearNotifications() {
     try {
@@ -125,7 +140,13 @@ function Dashboard() {
     getPosts();
     getNotifications();
     getFollowingPosts();
-  }, []);
+  }, [
+    getFollowers,
+    getFollowing,
+    getFollowingPosts,
+    getPosts,
+    getNotifications,
+  ]);
 
   return (
     <Container id="dashboard-container">

@@ -87,7 +87,7 @@ function Login(props) {
 
       render: () => (
         <Tab.Pane attached={false}>
-          <SignUp />
+          <SignUp triggerReload={triggerReload} />
         </Tab.Pane>
       ),
     },
@@ -179,7 +179,6 @@ function Login(props) {
   }
 
   const handleTabChange = (e, { activeIndex }) => {
-    // {setActiveTab({ position: "relative", top: "150px" })}
     setActiveTab(activeIndex);
   };
   useEffect(() => {

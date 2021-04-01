@@ -52,7 +52,7 @@ function DisplayUserAccount(props) {
         </Grid.Row>
         <Grid.Row centered className="profile-rows">
           {urlId === loggedInId ? (
-            <Button simple onClick={enableEditing}>
+            <Button onClick={enableEditing}>
               <Icon name="edit" />
               Edit
             </Button>

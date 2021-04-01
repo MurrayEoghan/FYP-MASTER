@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Image, Form, Icon, Button } from "semantic-ui-react";
-import _ from "lodash";
+import { Modal, Form, Icon, Button } from "semantic-ui-react";
 import axios from "axios";
 
 function CreatePost(props) {

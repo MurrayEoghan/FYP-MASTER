@@ -5,7 +5,7 @@ import null_profile_pic from "../../images/null_profile_pic.png";
 import "../style.css";
 
 function FollowerDisplay(props) {
-  let { follower } = props;
+  let { follower, key } = props;
 
   let [image, setImage] = useState(null);
 
@@ -19,7 +19,7 @@ function FollowerDisplay(props) {
     getImage();
   }, [image, getImage]);
   return (
-    <Table.Row>
+    <Table.Row key={key}>
       <Table.Cell width={5}>
         <Image
           src={image ? image : null_profile_pic}

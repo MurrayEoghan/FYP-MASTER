@@ -20,7 +20,7 @@ function App() {
   useEffect(() => {
     getData();
   }, [activeUser]);
-  console.log(activeUser);
+
   return (
     <div className="App">
       <header className="App-header">
