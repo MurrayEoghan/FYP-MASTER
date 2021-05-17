@@ -174,11 +174,11 @@ function Dashboard() {
                     content={
                       <Table>
                         <Table.Body id="follower-table-body">
-                          {userFollowers.map((item) => {
+                          {userFollowers.map((item, i) => {
                             return (
-                              <>
+                              <span key={i}>
                                 <FollowerDisplay follower={item} />
-                              </>
+                              </span>
                             );
                           })}
                         </Table.Body>
@@ -256,13 +256,15 @@ function Dashboard() {
                 {notifications.length > 0 ? (
                   <Table.Body id="notification-table">
                     <Table.Row>
-                      <Button
-                        color="red"
-                        content="Clear"
-                        fluid
-                        inverted
-                        onClick={clearNotifications}
-                      />
+                      <Table.Cell>
+                        <Button
+                          color="red"
+                          content="Clear"
+                          fluid
+                          inverted
+                          onClick={clearNotifications}
+                        />
+                      </Table.Cell>
                     </Table.Row>
                     {notifications.map((item) => {
                       return <Notification inboundNotification={item} />;
@@ -270,11 +272,15 @@ function Dashboard() {
                   </Table.Body>
                 ) : (
                   <Table.Body>
-                    <Message
-                      color="green"
-                      content="No Notifications"
-                      id="notification-message"
-                    />
+                    <Table.Row>
+                      <Table.Cell>
+                        <Message
+                          color="green"
+                          content="No Notifications"
+                          id="notification-message"
+                        />
+                      </Table.Cell>
+                    </Table.Row>
                   </Table.Body>
                 )}
               </Table>

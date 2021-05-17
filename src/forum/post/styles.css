@@ -25,7 +25,11 @@
 
   color: #7d0541;
 }
+#author-name-style {
+  font-family: "Potta One", cursive;
 
+  color: #7d0541;
+}
 #author-date-posted {
   color: darkgrey;
 }

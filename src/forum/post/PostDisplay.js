@@ -55,6 +55,8 @@ function PostDisplay(props) {
           setImageLoading(false);
         });
     } catch (err) {
+      setImage(null_profile_pic);
+      setImageLoading(false);
       console.log(err);
     }
   }
@@ -219,11 +221,7 @@ function PostDisplay(props) {
             ) : (
               <>
                 <span id="author-name">Post Author</span>
-                <Image
-                  id="author-profile-image"
-                  size="small"
-                  src={image ? image : null_profile_pic}
-                />
+                <Image id="author-profile-image" size="small" src={image} />
                 {post.profession_id > 0 ? (
                   <div>
                     <UserProfessionTag
@@ -232,7 +230,11 @@ function PostDisplay(props) {
                     />
                   </div>
                 ) : null}
-                <span id="author-name">{post.author}</span>
+                <span id="author-name">
+                  <a id="author-name-style" href={`/profile/${post.authorId}`}>
+                    {post.author}
+                  </a>
+                </span>
                 <br />
                 <span id="author-date-posted">
                   Posted : {moment(post.date).format("DD/MM/YYYY")}
@@ -477,7 +479,7 @@ function PostDisplay(props) {
                   labelPosition="left"
                   icon="reply"
                   disabled={
-                    textAreaValue.match(/[_/@"'<>.,£!$%^&]/) ||
+                    textAreaValue.match(/[_/@"<>^&]/) ||
                     textAreaValue.length < 1
                       ? true
                       : false

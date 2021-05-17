@@ -146,15 +146,17 @@ function Nav(props) {
                   {notifications.length > 0 ? (
                     <Table.Body id="notification-table">
                       <Table.Row>
-                        <Button
-                          color="red"
-                          content="Clear"
-                          fluid
-                          inverted
-                          onClick={clearNotifications}
-                        />
+                        <Table.Cell>
+                          <Button
+                            color="red"
+                            content="Clear"
+                            fluid
+                            inverted
+                            onClick={clearNotifications}
+                          />
+                        </Table.Cell>
                       </Table.Row>
-                      {notifications.map((item) => {
+                      {notifications.map((item, i) => {
                         return <Notification inboundNotification={item} />;
                       })}
                     </Table.Body>

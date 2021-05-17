@@ -58,7 +58,7 @@ function Notification(props) {
   }, [inboundNotification, notificationType]);
 
   return (
-    <Table.Row style={{ borderBottom: "1px solid #7d0541" }}>
+    <Table.Row>
       <Table.Cell width={2}>
         <Icon name={icon} />
       </Table.Cell>

@@ -46,10 +46,6 @@ ul {
   left: 45vw;
 }
 
-.dropdownItem {
-  color: #7d0541;
-}
-
 #dropdown {
   color: white;
 }
@@ -82,9 +78,7 @@ ul {
 }
 
 #notification-menu {
-  margin-top: 0;
   z-index: 101;
-  background-color: #7d0541;
 }
 
 thead,
@@ -94,4 +88,9 @@ tbody tr {
 
 #notification-table {
   max-height: 300px !important;
+}
+
+#notification-cell {
+  padding-top: 0;
+  padding-bottom: 0;
 }
