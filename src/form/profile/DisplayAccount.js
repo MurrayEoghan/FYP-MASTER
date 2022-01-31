@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid, Button, Icon } from "semantic-ui-react";
 import "../style.css";
+import UserProfessionTag from "../../genericComponents/UserProfessionTag";
 
 function DisplayUserAccount(props) {
   let {
@@ -11,12 +12,26 @@ function DisplayUserAccount(props) {
     enableEditing,
     urlId,
     loggedInId,
+    professionId,
   } = props;
 
   return (
     <>
       <span className="tab-headers">
-        {fname === "" && lname === "" ? "No Name Found" : `${fname} ${lname}`}
+        <span className="tab-headers-text">
+          {fname === "" && lname === "" ? "No Name Found" : `${fname} ${lname}`}
+        </span>
+        <span id="profession-tag">
+          <UserProfessionTag
+            professionId={professionId}
+            style={{
+              marginRight: "30px",
+              marginLeft: "30px",
+              position: "relative",
+              bottom: "10px",
+            }}
+          />
+        </span>
       </span>
       <Grid style={{ marginTop: "50px" }} columns="equal" centered>
         <Grid.Row className="profile-rows">
@@ -37,7 +52,7 @@ function DisplayUserAccount(props) {
         </Grid.Row>
         <Grid.Row centered className="profile-rows">
           {urlId === loggedInId ? (
-            <Button simple onClick={enableEditing}>
+            <Button onClick={enableEditing}>
               <Icon name="edit" />
               Edit
             </Button>

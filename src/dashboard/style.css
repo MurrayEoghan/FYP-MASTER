@@ -1,0 +1,60 @@
+#username-text {
+  font-family: "Potta One", cursive;
+  font-size: 3em;
+  text-align: center;
+  color: #7d0541;
+  position: relative;
+  top: 40px;
+}
+
+#user-tag {
+  font-size: 3em;
+  text-align: center;
+  color: #7d0541;
+  position: relative;
+  top: 45px;
+  left: 20px;
+}
+
+#dashboard-container {
+  text-align: center;
+  height: 85vh;
+  width: 90vw;
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  top: 120px;
+  position: relative;
+  left: 5vw;
+  box-shadow: #7c0842 0px 6px 12px -2px, #7c0842 0px 3px 7px -3px;
+}
+#notification-display {
+  display: inline-block;
+  width: 20vw;
+  box-shadow: #7c0842 0px 6px 12px -2px, #7c0842 0px 3px 7px -3px;
+  height: 58vh;
+  margin-left: 100px;
+  right: 6vw;
+  position: absolute;
+  top: 30px;
+}
+
+#notification-message {
+  min-height: 96.5%;
+  text-align: center;
+}
+
+#no-user-posts-msg {
+  width: 50vw;
+  position: relative;
+  top: 10vh;
+  height: 150px;
+  left: 6vw;
+}
+#no-following-posts-msg {
+  width: 50vw;
+  position: absolute;
+  top: 40vh;
+  height: 150px;
+  left: 6vw;
+}

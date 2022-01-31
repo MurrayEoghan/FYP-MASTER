@@ -30,7 +30,7 @@ function EditUserAccount(props) {
     setNewEmail(currentEmail);
     setConfirmEmail(currentEmail);
     setNewUsername(currentUsername);
-  }, [props]);
+  }, [props, currentEmail, currentUsername]);
 
   useEffect(() => {
     if (!newUsername.match(/[_/@"'<>.,£!$%^&]/) && newUsername.length > 6) {
@@ -83,9 +83,7 @@ function EditUserAccount(props) {
         })
         .then((res) => {
           disableEditing();
-          toast.success("Update Success", {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          });
+          saveToast();
         });
     } catch (err) {
       toast.error("Update Failed", {
@@ -97,7 +95,7 @@ function EditUserAccount(props) {
 
   return (
     <>
-      <span className="tab-headers">Edit Account</span>
+      <span className="tab-headers-text-edit">Edit Account</span>
 
       <Container id="form-container">
         <Form widths="equal" autoComplete={false}>
@@ -175,7 +173,6 @@ function EditUserAccount(props) {
             <label>Confirm Email</label>
             <Form.Input
               placeholder="Confirm Email"
-              value={profileId}
               fluid
               error={
                 emailError

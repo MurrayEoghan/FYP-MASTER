@@ -1,0 +1,39 @@
+#comment {
+  padding-top: 30px;
+  position: relative;
+  top: -15px;
+}
+
+#comment-avatar {
+  height: 100%;
+  width: 50px;
+  margin-right: 20px;
+}
+
+#comments-col {
+  position: relative;
+  left: 3%;
+}
+
+#comments-header {
+  margin-top: 10px;
+  color: #7d0541;
+  font-family: "Londrina Solid", cursive;
+}
+
+#create-comment-textarea {
+  width: 100%;
+}
+
+.ui.comments {
+  margin: 0 !important;
+  max-width: 93% !important;
+}
+
+#author-display {
+  padding-right: 5px;
+}
+
+#author-profession-tag {
+  margin-bottom: -5px;
+}

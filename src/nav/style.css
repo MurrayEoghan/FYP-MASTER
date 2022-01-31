@@ -7,6 +7,7 @@
   background: #7d0541;
   display: flex;
   justify-content: center;
+
   z-index: 100;
 }
 
@@ -42,16 +43,7 @@ ul {
   width: 171px;
   position: absolute;
   top: 12px;
-}
-
-#logo-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.dropdownItem {
-  color: #7d0541;
+  left: 45vw;
 }
 
 #dropdown {
@@ -66,4 +58,39 @@ ul {
 
 .dropdown-item {
   color: white;
+}
+
+#notifications-icon {
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  color: #fff;
+  position: relative;
+  left: 50px;
+  text-decoration: none;
+  position: sticky;
+
+  font-size: 17px;
+}
+
+#notifications-dropdown {
+  color: #fff;
+}
+
+#notification-menu {
+  z-index: 101;
+}
+
+thead,
+tbody tr {
+  width: 100%;
+}
+
+#notification-table {
+  max-height: 300px !important;
+}
+
+#notification-cell {
+  padding-top: 0;
+  padding-bottom: 0;
 }

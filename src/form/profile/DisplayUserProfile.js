@@ -1,12 +1,17 @@
-import React from "react";
-import { Table, Grid, Button, Icon } from "semantic-ui-react";
+import React, { useState, useEffect, useCallback } from "react";
+import { Grid, Button, Icon, Statistic, Popup, Table } from "semantic-ui-react";
+import UserProfessionTag from "../../genericComponents/UserProfessionTag";
+import { connect } from "react-redux";
+import axios from "axios";
 import "../style.css";
+import RecentPosts from "./RecentPosts";
+import FollowerDisplay from "./FollowerDisplay";
+import _ from "lodash";
+
 function DisplayUserProfile(props) {
   let {
     firstname,
     lastname,
-    userAge,
-    userGender,
     userAddr1,
     userAddr2,
     userAddr3,
@@ -15,76 +20,281 @@ function DisplayUserProfile(props) {
     enableEditing,
     urlId,
     loggedInId,
+    professionId,
   } = props;
+
+  let [userFollowers, setUserFollowers] = useState([]);
+  let [userFollowing, setUserFollowing] = useState([]);
+  let [following, setFollowing] = useState(false);
+  let [posts, setPosts] = useState([]);
+  const getPosts = useCallback(async () => {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let data = {
+      author_id: urlId,
+    };
+    try {
+      await axios
+        .post("http://localhost:8080/api/v1/posts/recent", data, { headers })
+        .then((res) => setPosts(res.data));
+    } catch (err) {
+      console.log(err);
+    }
+  }, [urlId]);
+  useEffect(() => {
+    getPosts();
+  }, [urlId, getPosts]);
+
+  useEffect(() => {
+    let found = _.filter(userFollowers, _.matches({ id: loggedInId }));
+    if (found.length > 0) {
+      setFollowing(true);
+    } else {
+      setFollowing(false);
+    }
+  }, [urlId, userFollowers, loggedInId]);
+
+  let mapsAdd = `http://www.google.com/maps/embed/v1/place?key=AIzaSyBMpl7kzfpil4n_iGXvQdGgu_QaPvoDvjc&q=${userAddr1},${userAddr2},${userAddr3},${userCounty},${userCountry}`;
+
+  async function follow() {
+    let data = {
+      parent_id: loggedInId,
+      sub_id: urlId,
+    };
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    try {
+      await axios
+        .post(`http://localhost:8080/api/v1/user/follow`, data, {
+          headers: headers,
+        })
+        .then(() => {
+          setFollowing(true);
+          triggerReload();
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const triggerFollow = () => {
+    setFollowing(true);
+    follow();
+  };
+
+  async function unfollow() {
+    let data = {
+      parent_id: loggedInId,
+      sub_id: urlId,
+    };
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    try {
+      await axios
+        .post(`http://localhost:8080/api/v1/user/unfollow`, data, {
+          headers: headers,
+        })
+        .then(() => {
+          setFollowing(false);
+          triggerReload();
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const triggerUnfollow = () => {
+    setFollowing(false);
+    unfollow();
+  };
+
+  const getFollowers = useCallback(async () => {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    try {
+      await axios
+        .get(`http://localhost:8080/api/v1/user/${urlId}/followers`, {
+          headers: headers,
+        })
+        .then((res) => {
+          setUserFollowers(res.data);
+        });
+    } catch (error) {
+      setUserFollowers([]);
+    }
+  }, [urlId]);
+  const getFollowing = useCallback(async () => {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    try {
+      await axios
+        .get(`http://localhost:8080/api/v1/user/${urlId}/following`, {
+          headers: headers,
+        })
+        .then((res) => {
+          setUserFollowing(res.data);
+        });
+    } catch (error) {
+      setUserFollowing([]);
+    }
+  }, [urlId]);
+
+  const triggerReload = useCallback(() => {
+    getFollowers();
+    getFollowing();
+    getPosts();
+  }, [getFollowers, getFollowing, getPosts]);
+
+  useEffect(() => {
+    triggerReload();
+  }, [urlId, triggerReload]);
+
   return (
     <>
       <span className="tab-headers">
-        {firstname === "" && lastname === ""
-          ? "No Name Found"
-          : `${firstname} ${lastname}`}
+        {firstname === "" && lastname === "" ? (
+          <span className="tab-headers-text">"No Name Found"</span>
+        ) : (
+          <>
+            {loggedInId !== urlId ? (
+              following ? (
+                <Button id="unfollow-button" onClick={triggerUnfollow}>
+                  <Icon.Group>
+                    <Icon name="user" />
+                    <Icon name="close" corner="bottom left" />
+                  </Icon.Group>
+                  Unfollow
+                </Button>
+              ) : (
+                <Button id="follow-button" onClick={triggerFollow}>
+                  <Icon name="user" />
+                  Follow
+                </Button>
+              )
+            ) : null}
+
+            <span
+              className="tab-headers-text"
+              style={professionId > 0 ? { paddingRight: "30px" } : null}
+            >
+              {firstname} {lastname}
+            </span>
+            {professionId > 0 ? (
+              <UserProfessionTag
+                professionId={professionId}
+                style={{
+                  marginRight: "30px",
+                  position: "relative",
+                  bottom: "10px",
+                }}
+              />
+            ) : null}
+          </>
+        )}
       </span>
+
       <Grid style={{ marginTop: "50px" }} columns="equal" centered>
         <Grid.Row>
-          <Grid.Column></Grid.Column>
-          <Grid.Column>
-            <span className="address-text">Age :</span>
-          </Grid.Column>
-          <Grid.Column>{userAge}</Grid.Column>
-          <Grid.Column></Grid.Column>
+          <span style={{ paddingRight: "150px" }}>
+            {userFollowers.length > 0 ? (
+              <Popup
+                content={
+                  <Table>
+                    <Table.Body id="follower-table-body">
+                      {userFollowers.map((item, i) => {
+                        return (
+                          <>
+                            <FollowerDisplay follower={item} key={i} />
+                          </>
+                        );
+                      })}
+                    </Table.Body>
+                  </Table>
+                }
+                on="click"
+                pinned
+                position="bottom center"
+                trigger={
+                  <Statistic size="mini">
+                    <Statistic.Value>{userFollowers.length}</Statistic.Value>
+                    <Statistic.Label>Followers</Statistic.Label>
+                  </Statistic>
+                }
+              />
+            ) : (
+              <Statistic size="mini">
+                <Statistic.Value>0</Statistic.Value>
+                <Statistic.Label>Followers</Statistic.Label>
+              </Statistic>
+            )}
+          </span>
+          {userFollowing.length > 0 ? (
+            <Popup
+              content={
+                <Table>
+                  <Table.Body id="follower-table-body">
+                    {userFollowing.map((item, i) => {
+                      return (
+                        <>
+                          <FollowerDisplay follower={item} key={i} />
+                        </>
+                      );
+                    })}
+                  </Table.Body>
+                </Table>
+              }
+              on="click"
+              pinned
+              position="bottom center"
+              trigger={
+                <Statistic size="mini">
+                  <Statistic.Value>{userFollowing.length}</Statistic.Value>
+                  <Statistic.Label>Following</Statistic.Label>
+                </Statistic>
+              }
+            />
+          ) : (
+            <Statistic size="mini">
+              <Statistic.Value>0</Statistic.Value>
+              <Statistic.Label>Following</Statistic.Label>
+            </Statistic>
+          )}
         </Grid.Row>
-        <Grid.Row>
-          <Grid.Column></Grid.Column>
-          <Grid.Column>
-            <span className="address-text">Gender :</span>
-          </Grid.Column>
-          <Grid.Column>{userGender}</Grid.Column>
-          <Grid.Column></Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column></Grid.Column>
-          <Grid.Column>
-            <span className="address-text">Address Line 1 :</span>
-          </Grid.Column>
-          <Grid.Column>{userAddr1}</Grid.Column>
-          <Grid.Column></Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column></Grid.Column>
-          <Grid.Column>
-            <span className="address-text">Address Line 2 :</span>
-          </Grid.Column>
-          <Grid.Column>{userAddr2}</Grid.Column>
-          <Grid.Column></Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column></Grid.Column>
-          <Grid.Column>
-            <span className="address-text">Address Line 3 :</span>
-          </Grid.Column>
-          <Grid.Column>{userAddr3}</Grid.Column>
-          <Grid.Column></Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column></Grid.Column>
-          <Grid.Column>
-            <span className="address-text">County :</span>
-          </Grid.Column>
-          <Grid.Column>{userCounty}</Grid.Column>
-          <Grid.Column></Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column></Grid.Column>
 
-          <Grid.Column>
-            <span className="address-text">Country :</span>
-          </Grid.Column>
-
-          <Grid.Column>{userCountry}</Grid.Column>
-          <Grid.Column></Grid.Column>
+        <Grid.Row>
+          <RecentPosts
+            data={posts}
+            tableId="user-recent-table"
+            postTitleHeader="Recent Posts"
+          />
         </Grid.Row>
+
+        <Grid.Row>
+          <span className="tab-headers-text">Practice Location</span>
+        </Grid.Row>
+        <Grid.Row>
+          <iframe
+            id="map_canvas"
+            name="map_canvas"
+            width="70%"
+            height="300px"
+            frameBorder="0"
+            title="practice location"
+            scrolling="no"
+            marginHeight="0"
+            marginWidth="0"
+            src={mapsAdd}
+          ></iframe>
+        </Grid.Row>
+
         <Grid.Row centered>
           {urlId === loggedInId ? (
-            <Button simple onClick={enableEditing}>
+            <Button onClick={enableEditing}>
               <Icon name="edit" />
               Edit
             </Button>
@@ -94,4 +304,11 @@ function DisplayUserProfile(props) {
     </>
   );
 }
-export default DisplayUserProfile;
+
+function mapStateToProps(state) {
+  return {
+    reduxUser: state.user,
+  };
+}
+
+export default connect(mapStateToProps, null)(DisplayUserProfile);

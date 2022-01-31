@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import EditUserProfile from "./EditProfile";
 import EditUserAccount from "./EditAccount";
 import DisplayUserProfile from "./DisplayUserProfile";
@@ -25,41 +25,41 @@ function EditProfile(props) {
 
   let [user, setUser] = useState({});
 
-  async function getUrlProfile() {
-    await axios
-      .get("http://localhost:8080/api/v1/user", {
-        params: { id: parseInt(urlUserId) },
-      })
-      .then((res) => {
-        setUser(res.data);
-      });
-  }
   const saveSuccess = () => {
     toast.success("Update Success", {
       position: toast.POSITION.BOTTOM_RIGHT,
     });
   };
 
-  const getImage = () => {
-    let ref = storage
+  const getImage = useCallback(() => {
+    storage
       .ref(`images/profile_pic_id_${urlUserId}`)
       .getDownloadURL()
       .then((url) => setImage(url));
-  };
+  }, [urlUserId]);
   useEffect(() => {
     getImage();
-  }, [imageChange]);
+  }, [imageChange, getImage]);
 
   useEffect(() => {
+    async function getUrlProfile() {
+      await axios
+        .get("http://localhost:8080/api/v1/user", {
+          params: { id: parseInt(urlUserId) },
+        })
+        .then((res) => {
+          setUser(res.data);
+        });
+    }
     getUrlProfile();
     getImage();
-  }, [urlUserId, displayProfileEdit]);
+  }, [urlUserId, displayProfileEdit, displayAccountEdit, getImage]);
   const panes = [
     {
       menuItem: (
         <>
           {parsedUrlId === loggedInUserId ? (
-            <Menu.Item disabled style={{ paddingBottom: "30px" }}>
+            <Menu.Item disabled style={{ paddingBottom: "30px" }} key={1}>
               <ImageUploadModal
                 header={"Profile Picture Upload"}
                 userId={loggedInUserId}
@@ -74,7 +74,7 @@ function EditProfile(props) {
               />
             </Menu.Item>
           ) : (
-            <Menu.Item disabled style={{ paddingBottom: "30px" }}>
+            <Menu.Item disabled style={{ paddingBottom: "30px" }} key={2}>
               <Image
                 src={image ? image : null_profile_pic}
                 fluid
@@ -85,6 +85,7 @@ function EditProfile(props) {
         </>
       ),
     },
+
     {
       menuItem: "Profile",
       render: () => (
@@ -104,6 +105,7 @@ function EditProfile(props) {
               userCountry={user.country}
               disableEditing={() => setDisplayProfileEdit(false)}
               saveToast={saveSuccess}
+              professionId={user.profession_id}
             />
           ) : (
             <DisplayUserProfile
@@ -119,13 +121,14 @@ function EditProfile(props) {
               urlId={parsedUrlId}
               loggedInId={loggedInUserId}
               enableEditing={() => setDisplayProfileEdit(true)}
+              professionId={user.profession_id}
             />
           )}
         </Tab.Pane>
       ),
     },
     {
-      menuItem: "Account",
+      menuItem: "About",
       render: () => (
         <Tab.Pane attached={false}>
           {displayAccountEdit ? (
@@ -146,6 +149,7 @@ function EditProfile(props) {
               enableEditing={() => setDisplayAccountEdit(true)}
               urlId={parsedUrlId}
               loggedInId={loggedInUserId}
+              professionId={user.profession_id}
             />
           )}
         </Tab.Pane>
@@ -157,7 +161,11 @@ function EditProfile(props) {
       <Grid>
         <Tab
           id="tab-pane"
-          menu={{ secondary: true, vertical: true, fluid: true }}
+          menu={{
+            secondary: true,
+            vertical: true,
+            fluid: true,
+          }}
           panes={panes}
           defaultActiveIndex={1}
         />
